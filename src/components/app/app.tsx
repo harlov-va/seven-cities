@@ -3,13 +3,14 @@ import {Main} from '../main/main';
 // import offers from '../../mocks/offers';
 
 export interface IOffer {
+    id: number,
     city: string,
     price: number,
     description: string,
     rating: number,
     type: `Apartment` | `Private room`,
     img: string,
-    coor: number[]
+    cords: number[]
 }
 
 export interface IProps {
