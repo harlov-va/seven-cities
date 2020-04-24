@@ -1,21 +1,9 @@
 import * as React from 'react';
 
 export const Card = (props) => {
-    
-    const {offer, onCardFocus} = props;
-    const spanStyle = {
-        width: `${offer.rating}%`
-    };
+    const {offer} = props;
     return (
-    <article className="cities__place-card place-card" onMouseOver={onCardFocus}>
-        <div className="place-card__mark">
-            <span>Premium</span>
-        </div>
-        <div className="cities__image-wrapper place-card__image-wrapper">
-            <a href="#">
-                <img className="place-card__image" src={offer.img} width="260" height="200" alt="Place image" />
-            </a>
-        </div>
+    <React.Fragment>
         <div className="place-card__info">
             <div className="place-card__price-wrapper">
                 <div className="place-card__price">
@@ -31,7 +19,7 @@ export const Card = (props) => {
             </div>
             <div className="place-card__rating rating">
                 <div className="place-card__stars rating__stars">
-                    <span style={spanStyle}></span>
+                    <span style={{width: `${offer.rating}%`}}></span>
                     <span className="visually-hidden">Rating</span>
                 </div>
             </div>
@@ -40,5 +28,5 @@ export const Card = (props) => {
             </h2>
             <p className="place-card__type">{offer.type}</p>
         </div>
-    </article>);
+    </React.Fragment>);
 }

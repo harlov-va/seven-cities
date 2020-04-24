@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Main} from '../main/main';
-// import offers from '../../mocks/offers';
+import { Property } from '../property/property';
 
 export interface IOffer {
     id: number,
@@ -18,27 +18,29 @@ export interface IProps {
 }
 
 export class App extends React.PureComponent<IProps>{
-    static getScreen(question, props, onUserFocus){
-        if(question === -1){
-            const { gameTime, errorCount} = props;
-            // return <WelcomeScreen time={gameTime} errorCount={errorCount} onHoveHendler={onUserFocus} />
+    static getScreen(id, props, onUserClick){
+        const { offers } = props;
+        if(id === -1){
+            return <Main offers={offers}/>;
         }
-        const { offers} = props;
-        return <Main offers={offers}/>;
+        if(id > -1){
+            return <Property offers = {offers} onChoice= {onUserClick}/>
+        }
+        return null;
     }
     constructor(props){
         super(props);
         this.state = {
-            question: 1,
+            id: -1,
         };
     }
     render() {
-        const  question:number  = this.state[`question`];
-        return App.getScreen(question, this.props, () => {
-            // console.log(`Наведен на карточку`);
-            // this.setState((prevState) => {
-				// question: prevState.question + 1,
-            // })
+        const id:number = this.state[`question`];
+        return App.getScreen(id, this.props, (cardId) => {
+            console.log(`cardId`);
+            this.setState(() => {
+				id: cardId
+            })
         });
     }
 }

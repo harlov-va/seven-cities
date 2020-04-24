@@ -5,7 +5,7 @@ export const ListReviews = (props) => {
   return <section className="property__reviews reviews">
     <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
     <ul className="reviews__list">
-      {reviews.map((item) => <Review review = {item}/>)}
+      {reviews.map((item) => <Review review = {item} key={`review-${item.id}`}/>)}
     </ul>
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>

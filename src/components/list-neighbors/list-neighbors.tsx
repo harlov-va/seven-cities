@@ -1,8 +1,8 @@
 import { PureComponent } from "react";
 import React = require("react");
-import { CardOffer } from "../card-offer/card-offer";
 import {IProps} from '../app/app';
-export class ListOffers extends PureComponent<IProps>{
+import { CardNeighbor } from "../card-neighbor/card-neighbor";
+export class ListNeighbors extends PureComponent<IProps>{
     constructor(props) {
         super(props);
         this.state = {
@@ -11,10 +11,10 @@ export class ListOffers extends PureComponent<IProps>{
     }
     render() {
         const offers = this.props[`offers`];
-        return <div className="cities__places-list places__list tabs__content">
-            {offers.map((offer, index) => {                
-                return <CardOffer key={`offer-${index}`} offer={offer} onCardFocus={() => {
-                    this.setState(() => {                        
+        return <div className="near-places__list places__list">
+            {offers.map((offer) => {                
+                return <CardNeighbor key={`neighbor-${offer.id}`} offer={offer} onCardFocus={() => {
+                    this.setState(() => {
                         return {
                             currentCard: offer,
                         }
