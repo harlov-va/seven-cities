@@ -3,7 +3,7 @@ import { ListOffers } from '../list-offers/list-offers';
 import { Map } from '../map/map';
 
 export const Main = (props) => {
-  const { offers } = props;
+  const { offers , onChoice} = props;
   return <React.Fragment>    
     <div className="page page--gray page--main">
       <header className="header">
@@ -95,7 +95,7 @@ export const Main = (props) => {
                 </select> */}
 
               </form>
-              <ListOffers offers={offers} />
+              <ListOffers offers={offers} onChoice={onChoice}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">

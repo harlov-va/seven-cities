@@ -1,14 +1,8 @@
 import * as React from "react";
-interface IProps {
-  name: string,
-  avatar: string,
-  rating: number,
-  description: string,
-  date: number
-}
+
 const Review = (props) => {
   const {review} = props;
-  const getDate = (date) => {
+  const getDate = (date) => {    
     const dateTemp  = new Date(date);
     const month = dateTemp.toLocaleString('ru-RU', { month: 'long' });
     return `${month} ${dateTemp.getFullYear()}`;

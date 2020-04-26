@@ -1,7 +1,11 @@
 import { PureComponent } from "react";
 import React = require("react");
 import { CardOffer } from "../card-offer/card-offer";
-import {IProps} from '../app/app';
+import {IOffer} from '../app/app';
+interface IProps {
+    offers: IOffer[],
+    onChoice: (id: number) => void
+}
 export class ListOffers extends PureComponent<IProps>{
     constructor(props) {
         super(props);
@@ -10,10 +14,11 @@ export class ListOffers extends PureComponent<IProps>{
         };
     }
     render() {
-        const offers = this.props[`offers`];
+        const { offers, onChoice } = this.props;
         return <div className="cities__places-list places__list tabs__content">
             {offers.map((offer, index) => {                
-                return <CardOffer key={`offer-${index}`} offer={offer} onCardFocus={() => {
+                return <CardOffer key={`offer-${index}`} offer={offer} onCardClick={() => {
+                    onChoice(offer.id);
                     this.setState(() => {                        
                         return {
                             currentCard: offer,

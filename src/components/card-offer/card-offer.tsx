@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Card } from '../card/card';
 
 export const CardOffer = (props) => {
-    const { offer, onCardFocus } = props;
+    const { offer, onCardClick } = props;
     return (
-        <article className="cities__place-card place-card" onMouseOver={onCardFocus}>
+        <article className="cities__place-card place-card" onClick={onCardClick}>
             <div className="place-card__mark">
                 <span>Premium</span>
             </div>

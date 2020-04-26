@@ -9,7 +9,9 @@ const offers: IOffer[] = [
     rating: 90,
     type: `Apartment`,
     img: `img/apartment-01.jpg`,
-    cords: [52.3909553943508, 4.85309666406198]
+    cords: [52.3909553943508, 4.85309666406198],
+    features: [`Entire place`, `3 Bedrooms`, `Max 4 adults`],
+    inside: [`Wi-Fi`,`Washing machine`,`Towels`,`Heating`,`Coffee machine`,`Baby seat`,`Kitchen`,`Dishwasher`,`Cabel TV`,`Fridge`,]
   },
   {
     id: 2,
@@ -19,7 +21,9 @@ const offers: IOffer[] = [
     rating: 90,
     type: `Apartment`,
     img: `img/apartment-01.jpg`,
-    cords: [52.369553943508, 4.85309666406198]
+    cords: [52.369553943508, 4.85309666406198],
+    features: [`Entire place`, `3 Bedrooms`, `Max 4 adults`],
+    inside: [`Wi-Fi`,`Washing machine`,`Towels`,`Heating`,`Coffee machine`,`Baby seat`,`Kitchen`,`Dishwasher`,`Cabel TV`,`Fridge`,]
   },
   {
     id: 3,
@@ -29,7 +33,9 @@ const offers: IOffer[] = [
     rating: 80,
     type: `Private room`,
     img: `img/apartment-02.jpg`,
-    cords: [52.3909553943508, 4.929309666406198]
+    cords: [52.3909553943508, 4.929309666406198],
+    features: [`Entire place`, `3 Bedrooms`, `Max 4 adults`],
+    inside: [`Wi-Fi`,`Washing machine`,`Towels`,`Heating`,`Coffee machine`,`Baby seat`,`Kitchen`,`Dishwasher`,`Cabel TV`,`Fridge`,]
   },
   {
     id: 4,
@@ -39,7 +45,9 @@ const offers: IOffer[] = [
     rating: 80,
     type: `Apartment`,
     img: `img/apartment-03.jpg`,
-    cords: [52.3809553943508, 4.939309666406198]
+    cords: [52.3809553943508, 4.939309666406198],
+    features: [`Entire place`, `3 Bedrooms`, `Max 4 adults`],
+    inside: [`Wi-Fi`,`Washing machine`,`Towels`,`Heating`,`Coffee machine`,`Baby seat`,`Kitchen`,`Dishwasher`,`Cabel TV`,`Fridge`,]
   },
   {
     id: 5,
@@ -49,7 +57,9 @@ const offers: IOffer[] = [
     rating: 100,
     type: `Apartment`,
     img: `img/room.jpg`,
-    cords: [52.3909553943508, 4.909309666406198]
+    cords: [52.3909553943508, 4.909309666406198],
+    features: [`Entire place`, `3 Bedrooms`, `Max 4 adults`],
+    inside: [`Wi-Fi`,`Washing machine`,`Towels`,`Heating`,`Coffee machine`,`Baby seat`,`Kitchen`,`Dishwasher`,`Cabel TV`,`Fridge`,]
   },
 ];
 

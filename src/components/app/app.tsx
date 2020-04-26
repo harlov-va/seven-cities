@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Main} from '../main/main';
+import { Main } from '../main/main';
 import { Property } from '../property/property';
 
 export interface IOffer {
@@ -10,37 +10,61 @@ export interface IOffer {
     rating: number,
     type: `Apartment` | `Private room`,
     img: string,
-    cords: number[]
+    cords: number[],
+    features: string[],
+    inside: string[],
 }
-
+export interface IReview {
+    name: string,
+    avatar: string,
+    rating: number,
+    description: string,
+    date: number
+  }
 export interface IProps {
-    offers: IOffer[]
+    offers: IOffer[],
+    reviews: IReview[]
 }
 
 export class App extends React.PureComponent<IProps>{
-    static getScreen(id, props, onUserClick){
-        const { offers } = props;
-        if(id === -1){
-            return <Main offers={offers}/>;
+    static getScreen(id, props, onUserClick) {
+        const { offers, reviews } = props;
+        if (id === -1) {
+            return <Main offers={offers} onChoice={onUserClick}/>;
         }
-        if(id > -1){
-            return <Property offers = {offers} onChoice= {onUserClick}/>
+        const neighbours: IOffer[] = [];        
+        let curOffer;
+        for (let item of offers) {
+            if (item.id === id) {
+                curOffer = item;
+                break;
+            }
+        }
+        offers.forEach((elem) => {
+            if ((curOffer.id !== elem.id) &&
+                (Math.abs(curOffer.cords[0].toFixed(2) - elem.cords[0].toFixed(2)) <= 0.05) &&
+                (Math.abs(curOffer.cords[1].toFixed(2) - elem.cords[1].toFixed(2)) <= 0.05)) {
+                neighbours.push(elem);
+            }
+        });
+        
+        if (id > -1) {
+            return <Property neighbours={neighbours} reviews={reviews} currentOffer={curOffer} onChoice={onUserClick} />
         }
         return null;
     }
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             id: -1,
         };
     }
     render() {
-        const id:number = this.state[`question`];
-        return App.getScreen(id, this.props, (cardId) => {
-            console.log(`cardId`);
-            this.setState(() => {
-				id: cardId
-            })
+        const id: number = this.state[`id`];
+        return App.getScreen(id, this.props, (cardId) => {            
+            this.setState((prevState) => ({
+                id: cardId
+            }))
         });
     }
 }

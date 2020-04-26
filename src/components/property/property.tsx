@@ -4,24 +4,7 @@ import { ListNeighbors } from '../list-neighbors/list-neighbors'
 import { Map } from "../map/map";
 
 export const Property = (props) => {
-  const { reviews, offers, onChoice } = props;
-  const neighbours: any[] = [];
-  const id: number = 3;
-  let curOffer;
-  for (let item of offers) {
-    if (item.id === id) {
-      curOffer = item;
-      break;
-    }
-  }
-  offers.forEach((elem) => {
-    console.log(elem.cords[0].toFixed(2), elem.cords[1].toFixed(2))
-    if ((curOffer.id !== elem.id) &&
-      (Math.abs(curOffer.cords[0].toFixed(2) - elem.cords[0].toFixed(2)) <= 0.05) &&
-      (Math.abs(curOffer.cords[1].toFixed(2) - elem.cords[1].toFixed(2)) <= 0.05)) {
-      neighbours.push(elem);
-    }
-  });
+  const { reviews, neighbours, onChoice, currentOffer } = props;
   return (
     <React.Fragment>
       <div className="page">
@@ -79,7 +62,7 @@ export const Property = (props) => {
                 </div>
                 <div className="property__name-wrapper">
                   <h1 className="property__name">
-                    Beautiful &amp; luxurious studio at great location
+                    {currentOffer.description}
                   </h1>
                   <button className="property__bookmark-button button" type="button">
                     <svg className="property__bookmark-icon" width="31" height="33">
@@ -90,59 +73,32 @@ export const Property = (props) => {
                 </div>
                 <div className="property__rating rating">
                   <div className="property__stars rating__stars">
-                    <span style={{ width: `96%` }}></span>
+                    <span style={{ width: `${currentOffer.rating}%` }}></span>
                     <span className="visually-hidden">Rating</span>
                   </div>
-                  <span className="property__rating-value rating__value">4.8</span>
+                  <span className="property__rating-value rating__value">{currentOffer.rating%20 === 0 ? `${currentOffer.rating/20}.0`: currentOffer.rating/20}</span>
                 </div>
                 <ul className="property__features">
                   <li className="property__feature property__feature--entire">
-                    Entire place
+                    {currentOffer.features[0]}
                   </li>
                   <li className="property__feature property__feature--bedrooms">
-                    3 Bedrooms
+                    {currentOffer.features[1]}
                   </li>
                   <li className="property__feature property__feature--adults">
-                    Max 4 adults
+                    {currentOffer.features[2]}
                   </li>
                 </ul>
                 <div className="property__price">
-                  <b className="property__price-value">&euro;120</b>
+                  <b className="property__price-value">&euro;{currentOffer.price}</b>
                   <span className="property__price-text">&nbsp;night</span>
                 </div>
                 <div className="property__inside">
                   <h2 className="property__inside-title">What&apos;s inside</h2>
                   <ul className="property__inside-list">
-                    <li className="property__inside-item">
-                      Wi-Fi
-                    </li>
-                    <li className="property__inside-item">
-                      Washing machine
-                    </li>
-                    <li className="property__inside-item">
-                      Towels
-                    </li>
-                    <li className="property__inside-item">
-                      Heating
-                    </li>
-                    <li className="property__inside-item">
-                      Coffee machine
-                    </li>
-                    <li className="property__inside-item">
-                      Baby seat
-                    </li>
-                    <li className="property__inside-item">
-                      Kitchen
-                    </li>
-                    <li className="property__inside-item">
-                      Dishwasher
-                    </li>
-                    <li className="property__inside-item">
-                      Cabel TV
-                    </li>
-                    <li className="property__inside-item">
-                      Fridge
-                    </li>
+                    {currentOffer.inside.map((item,index) => <li className="property__inside-item" key={item+index}>
+                      {item}
+                    </li>)}
                   </ul>
                 </div>
                 <div className="property__host">
@@ -182,7 +138,7 @@ export const Property = (props) => {
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
-              <ListNeighbors offers={neighbours} onChoice={onChoice}/>
+              <ListNeighbors offers={neighbours} onChoice={onChoice} />
             </section>
           </div>
         </main>
