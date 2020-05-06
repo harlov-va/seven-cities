@@ -1,6 +1,8 @@
+import {connect} from 'react-redux';
 import * as React from 'react';
 import { Main } from '../main/main';
 import { Property } from '../property/property';
+import {ActionCreator} from '../../reducer';
 
 export interface IOffer {
     id: number,
@@ -21,16 +23,17 @@ export interface IReview {
     description: string,
     date: number
   }
-export interface IProps {
-    offers: IOffer[],
+export interface IProps {    
     reviews: IReview[]
 }
 
-export class App extends React.PureComponent<IProps>{
+class App extends React.PureComponent<IProps>{
     static getScreen(id, props, onUserClick) {
-        const { offers, reviews } = props;
+        const { city, offers, cities, reviews, onTabClick } = props;
         if (id === -1) {
-            return <Main offers={offers} onChoice={onUserClick}/>;
+            return <Main cities={cities} 
+            offers={offers} 
+            onChoice={onUserClick} onTabClick={onTabClick}/>;
         }
         const neighbours: IOffer[] = [];        
         let curOffer;
@@ -68,3 +71,20 @@ export class App extends React.PureComponent<IProps>{
         });
     }
 }
+
+const mapStateToProps = (state, ownProps) => Object.assign({},ownProps,{
+    city: state.city,
+    offers: state.offers,
+    cities: state.cities,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    onTabClick: (newCity:string):void => {
+        dispatch(ActionCreator.changeCity(newCity));
+        dispatch(ActionCreator.getOffers(newCity));
+    }
+});
+
+export {App};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

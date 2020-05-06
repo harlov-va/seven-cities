@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { ListOffers } from '../list-offers/list-offers';
 import { Map } from '../map/map';
+import ListCities from '../list-cities/list-cities'
 
 export const Main = (props) => {
-  const { offers , onChoice} = props;
+  const { city, offers, cities , onChoice, onTabClick} = props;
+  
   return <React.Fragment>    
     <div className="page page--gray page--main">
       <header className="header">
@@ -31,42 +33,7 @@ export const Main = (props) => {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+        <ListCities cities={cities} onTabClick={onTabClick}/>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
