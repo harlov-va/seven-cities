@@ -8,9 +8,9 @@ interface IProps {
 export default class ListCities extends React.PureComponent<IProps>{
   constructor(props) {
     super(props);
-    const cities = this.props[`cities`];    
+    const { cities } = this.props;  
     this.state = {
-      selectedTab: cities[3],
+      selectedTab: cities[0],
     }
   }
   _isActive(tabCity) {
@@ -22,7 +22,7 @@ export default class ListCities extends React.PureComponent<IProps>{
     onTabClick(event.target.textContent);
   };
   render() {
-    const cities = this.props[`cities`];    
+    const { cities } = this.props;    
     return <div className="tabs">
       <section className="locations container">
         <ul className="locations__list tabs__list" onClick={this._setActiveTab.bind(this)}>

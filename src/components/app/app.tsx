@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import * as React from 'react';
-import { Main } from '../main/main';
+import  Main from '../main/main';
 import { Property } from '../property/property';
 import {ActionCreator} from '../../reducer';
 
@@ -29,11 +29,18 @@ export interface IProps {
 
 class App extends React.PureComponent<IProps>{
     static getScreen(id, props, onUserClick) {
-        const { city, offers, cities, reviews, onTabClick } = props;
+        const { city, offers, cities, hoverId, reviews, onTabClick, onChangeSorting, onHoverCard } = props;
         if (id === -1) {
-            return <Main cities={cities} 
-            offers={offers} 
-            onChoice={onUserClick} onTabClick={onTabClick}/>;
+            return <Main
+            city={city}
+            cities={cities} 
+            offers={offers}
+            hoverId={hoverId} 
+            onCardClick={onUserClick} 
+            onTabClick={onTabClick}
+            onChangeSorting={onChangeSorting}
+            onHoverCard={onHoverCard}
+            />;
         }
         const neighbours: IOffer[] = [];        
         let curOffer;
@@ -52,7 +59,7 @@ class App extends React.PureComponent<IProps>{
         });
         
         if (id > -1) {
-            return <Property neighbours={neighbours} reviews={reviews} currentOffer={curOffer} onChoice={onUserClick} />
+            return <Property neighbours={neighbours} reviews={reviews} currentOffer={curOffer} onCardClick={onUserClick} />
         }
         return null;
     }
@@ -76,13 +83,20 @@ const mapStateToProps = (state, ownProps) => Object.assign({},ownProps,{
     city: state.city,
     offers: state.offers,
     cities: state.cities,
+    hoverId: state.hoverId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     onTabClick: (newCity:string):void => {
         dispatch(ActionCreator.changeCity(newCity));
         dispatch(ActionCreator.getOffers(newCity));
-    }
+    },
+    onChangeSorting: (sort:string):void => {
+        dispatch(ActionCreator.sorting(sort));
+    },
+    onHoverCard: (hoverId: number):void => {
+        dispatch(ActionCreator.hoverCard(hoverId));
+    },
 });
 
 export {App};

@@ -4,7 +4,7 @@ import { ListNeighbors } from '../list-neighbors/list-neighbors'
 import { Map } from "../map/map";
 
 export const Property = (props) => {
-  const { reviews, neighbours, onChoice, currentOffer } = props;
+  const { reviews, neighbours, onCardClick, currentOffer } = props;
   return (
     <React.Fragment>
       <div className="page">
@@ -132,13 +132,13 @@ export const Property = (props) => {
               </div>
             </div>
             <section className="property__map map">
-              <Map offerCords={neighbours.map((item) => item.cords)} />
+              {/* <Map offerCords={neighbours.map((item) => item.cords)} /> */}
             </section>
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
-              <ListNeighbors offers={neighbours} onChoice={onChoice} />
+              <ListNeighbors offers={neighbours} onCardClick={onCardClick} />
             </section>
           </div>
         </main>
