@@ -1,9 +1,10 @@
 import {IOffer} from '../components/app/app';
 
-const offers: IOffer[] = [
+const offers: object[] = [
   {
     id: 1,
     city: `Paris`,
+    status: `Premium`,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -16,6 +17,7 @@ const offers: IOffer[] = [
   {
     id: 2,
     city: `Paris`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -28,6 +30,7 @@ const offers: IOffer[] = [
   {
     id: 3,
     city: `Paris`,
+    status: ``,
     price: 80,
     description: `Wood and stone place`,
     rating: 80,
@@ -40,6 +43,7 @@ const offers: IOffer[] = [
   {
     id: 4,
     city: `Paris`,
+    status: ``,
     price: 132,
     description: `Canal View Prinsengracht`,
     rating: 80,
@@ -52,6 +56,7 @@ const offers: IOffer[] = [
   {
     id: 5,
     city: `Paris`,
+    status: `Premium`,
     price: 180,
     description: `Nice, cozy, warm big bed apartment`,
     rating: 100,
@@ -64,6 +69,7 @@ const offers: IOffer[] = [
   {
     id: 6,
     city: `Cologne`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -76,6 +82,7 @@ const offers: IOffer[] = [
   {
     id: 7,
     city: `Cologne`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -88,6 +95,7 @@ const offers: IOffer[] = [
   {
     id: 8,
     city: `Cologne`,
+    status: ``,
     price: 80,
     description: `Wood and stone place`,
     rating: 80,
@@ -100,6 +108,7 @@ const offers: IOffer[] = [
   {
     id: 9,
     city: `Cologne`,
+    status: ``,
     price: 132,
     description: `Canal View Prinsengracht`,
     rating: 80,
@@ -112,6 +121,7 @@ const offers: IOffer[] = [
   {
     id: 10,
     city: `Cologne`,
+    status: ``,
     price: 180,
     description: `Nice, cozy, warm big bed apartment`,
     rating: 100,
@@ -124,6 +134,7 @@ const offers: IOffer[] = [
   {
     id: 11,
     city: `Brussels`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -136,6 +147,7 @@ const offers: IOffer[] = [
   {
     id: 12,
     city: `Brussels`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -148,6 +160,7 @@ const offers: IOffer[] = [
   {
     id: 13,
     city: `Brussels`,
+    status: ``,
     price: 80,
     description: `Wood and stone place`,
     rating: 80,
@@ -160,6 +173,7 @@ const offers: IOffer[] = [
   {
     id: 14,
     city: `Brussels`,
+    status: ``,
     price: 132,
     description: `Canal View Prinsengracht`,
     rating: 80,
@@ -172,6 +186,7 @@ const offers: IOffer[] = [
   {
     id: 15,
     city: `Brussels`,
+    status: ``,
     price: 180,
     description: `Nice, cozy, warm big bed apartment`,
     rating: 100,
@@ -184,6 +199,7 @@ const offers: IOffer[] = [
   {
     id: 16,
     city: `Amsterdam`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -196,6 +212,7 @@ const offers: IOffer[] = [
   {
     id: 17,
     city: `Amsterdam`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -208,6 +225,7 @@ const offers: IOffer[] = [
   {
     id: 18,
     city: `Amsterdam`,
+    status: ``,
     price: 80,
     description: `Wood and stone place`,
     rating: 80,
@@ -220,6 +238,7 @@ const offers: IOffer[] = [
   {
     id: 19,
     city: `Amsterdam`,
+    status: ``,
     price: 132,
     description: `Canal View Prinsengracht`,
     rating: 80,
@@ -232,6 +251,7 @@ const offers: IOffer[] = [
   {
     id: 20,
     city: `Amsterdam`,
+    status: ``,
     price: 180,
     description: `Nice, cozy, warm big bed apartment`,
     rating: 100,
@@ -244,6 +264,7 @@ const offers: IOffer[] = [
   {
     id: 21,
     city: `Hamburg`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -256,6 +277,7 @@ const offers: IOffer[] = [
   {
     id: 22,
     city: `Hamburg`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -268,6 +290,7 @@ const offers: IOffer[] = [
   {
     id: 23,
     city: `Hamburg`,
+    status: ``,
     price: 80,
     description: `Wood and stone place`,
     rating: 80,
@@ -280,6 +303,7 @@ const offers: IOffer[] = [
   {
     id: 24,
     city: `Hamburg`,
+    status: ``,
     price: 132,
     description: `Canal View Prinsengracht`,
     rating: 80,
@@ -292,6 +316,7 @@ const offers: IOffer[] = [
   {
     id: 25,
     city: `Hamburg`,
+    status: ``,
     price: 180,
     description: `Nice, cozy, warm big bed apartment`,
     rating: 100,
@@ -304,6 +329,7 @@ const offers: IOffer[] = [
   {
     id: 26,
     city: `Dusseldorf`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -316,6 +342,7 @@ const offers: IOffer[] = [
   {
     id: 27,
     city: `Dusseldorf`,
+    status: ``,
     price: 120,
     description: `Beautiful & luxurious apartment at great location`,
     rating: 90,
@@ -328,6 +355,7 @@ const offers: IOffer[] = [
   {
     id: 28,
     city: `Dusseldorf`,
+    status: ``,
     price: 80,
     description: `Wood and stone place`,
     rating: 80,
@@ -340,6 +368,7 @@ const offers: IOffer[] = [
   {
     id: 29,
     city: `Dusseldorf`,
+    status: ``,
     price: 132,
     description: `Canal View Prinsengracht`,
     rating: 80,
@@ -352,6 +381,7 @@ const offers: IOffer[] = [
   {
     id: 30,
     city: `Dusseldorf`,
+    status: ``,
     price: 180,
     description: `Nice, cozy, warm big bed apartment`,
     rating: 100,

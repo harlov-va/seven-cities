@@ -1,14 +1,11 @@
 import * as React from 'react';
 import * as leaflet from 'leaflet';
-import { IOffer } from '../app/app';
-
-interface ICords {
-  cords: number[]
-}
+import { IOffer, ICity } from '../app/app';
 
 interface IProps {
   className: string,
   offers: IOffer[],
+  city: ICity,
   hoverId: number,  
 }
 
@@ -17,6 +14,7 @@ export class Map extends React.PureComponent<IProps> {
   private iconActive: object;
   private layer: any;
   private mapRef: any;
+  private map: any;
   constructor(props) {
     super(props);
     this.mapRef = React.createRef();
@@ -29,52 +27,49 @@ export class Map extends React.PureComponent<IProps> {
       iconUrl: `img/pin-active.svg`,
       iconSize: [30, 30]
     });
+    this.map = null;
   }
 
   componentDidMount() {
-    const city = [52.38333, 4.9];
-    const icon = leaflet.icon({
-      iconUrl: `img/pin.svg`,
-      iconSize: [30, 30]
-    });
-    const zoom = 12;
-    const map = leaflet.map(this.mapRef.current, {
-      center: city,
+    const { offers, city } = this.props;    
+    const zoom = city.location.zoom;
+    this.map = leaflet.map(this.mapRef.current, {
+      center: [city.location.latitude, city.location.longitude],
       zoom: zoom,
       zoomControl: false,
       marker: true
     });
-    map.setView(city, zoom);
+    this.map.setView([city.location.latitude, city.location.longitude], zoom);
     leaflet
       .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       })
-      .addTo(map);
-    const { offers } = this.props;
+      .addTo(this.map);
+    
     const markerArray = [];
     offers.forEach((elem: IOffer) => {
-      markerArray.push(leaflet.marker(elem.cords, {icon}))
+      markerArray.push(leaflet.marker([elem.location.latitude,elem.location.longitude], {icon: this.icon}))
     });
-    this.layer = leaflet.featureGroup(markerArray).addTo(map);
+    this.layer = leaflet.featureGroup(markerArray).addTo(this.map);
   }
 
-  componentDidUpdate(prevProps) {    
-    if (prevProps.offers !== this.props.offers || prevProps.hoverOfferId !== this.props.hoverId) {
-      this.updateMarkers(this.props.offers);
+  componentDidUpdate(prevProps) {  
+    if (prevProps.offers !== this.props.offers || prevProps.hoverId !== this.props.hoverId) {
+      this.updateMarkers(this.props.offers, this.props.city);
     }
   }
 
-  updateMarkers(offers) {
+  updateMarkers(offers, city) {
     this.layer.clearLayers();
     offers.forEach((offer) => {
       leaflet
-        .marker(offer.cords, {icon: offer.id === this.props.hoverId ? this.iconActive : this.icon})
+        .marker([offer.location.latitude,offer.location.longitude], {icon: offer.id === this.props.hoverId ? this.iconActive : this.icon})
         .addTo(this.layer);
     });
+    this.map.setView(new leaflet.LatLng(city.location.latitude,city.location.longitude), city.zoom);
   }
 
-  render() {
-    // return <div id="map" style={{width: `100%`, height: `100%`}}></div>    
+  render() {    
     const {className} = this.props;
 
     return (

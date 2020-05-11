@@ -4,7 +4,7 @@ import { ListNeighbors } from '../list-neighbors/list-neighbors'
 import { Map } from "../map/map";
 
 export const Property = (props) => {
-  const { reviews, neighbours, onCardClick, currentOffer } = props;
+  const { city, reviews, neighbours, hoverId, onCardClick, currentOffer } = props;
   return (
     <React.Fragment>
       <div className="page">
@@ -62,7 +62,7 @@ export const Property = (props) => {
                 </div>
                 <div className="property__name-wrapper">
                   <h1 className="property__name">
-                    {currentOffer.description}
+                    {currentOffer.title}
                   </h1>
                   <button className="property__bookmark-button button" type="button">
                     <svg className="property__bookmark-icon" width="31" height="33">
@@ -73,20 +73,20 @@ export const Property = (props) => {
                 </div>
                 <div className="property__rating rating">
                   <div className="property__stars rating__stars">
-                    <span style={{ width: `${currentOffer.rating}%` }}></span>
+                    <span style={{ width: `${currentOffer.rating * 20}%` }}></span>
                     <span className="visually-hidden">Rating</span>
                   </div>
-                  <span className="property__rating-value rating__value">{currentOffer.rating%20 === 0 ? `${currentOffer.rating/20}.0`: currentOffer.rating/20}</span>
+                  <span className="property__rating-value rating__value">{currentOffer.rating % 2 === 0 ? `${currentOffer.rating}.0` : currentOffer.rating}</span>
                 </div>
                 <ul className="property__features">
                   <li className="property__feature property__feature--entire">
-                    {currentOffer.features[0]}
+                    Entire place
                   </li>
                   <li className="property__feature property__feature--bedrooms">
-                    {currentOffer.features[1]}
+                    {currentOffer.bedrooms + ` Bedrooms`}
                   </li>
                   <li className="property__feature property__feature--adults">
-                    {currentOffer.features[2]}
+                    { `Max `+currentOffer.max_adults + ` adults`}
                   </li>
                 </ul>
                 <div className="property__price">
@@ -96,7 +96,7 @@ export const Property = (props) => {
                 <div className="property__inside">
                   <h2 className="property__inside-title">What&apos;s inside</h2>
                   <ul className="property__inside-list">
-                    {currentOffer.inside.map((item,index) => <li className="property__inside-item" key={item+index}>
+                    {currentOffer.goods.map((item, index) => <li className="property__inside-item" key={item + index}>
                       {item}
                     </li>)}
                   </ul>
@@ -131,9 +131,12 @@ export const Property = (props) => {
                 <ListReviews reviews={reviews} />
               </div>
             </div>
-            <section className="property__map map">
-              {/* <Map offerCords={neighbours.map((item) => item.cords)} /> */}
-            </section>
+            <Map
+              offers={neighbours}
+              city={city}
+              hoverId={hoverId}
+              className={`property__map`}
+            />
           </section>
           <div className="container">
             <section className="near-places places">

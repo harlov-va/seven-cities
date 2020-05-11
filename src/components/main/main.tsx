@@ -3,12 +3,14 @@ import { ListOffers } from '../list-offers/list-offers';
 import { Map } from '../map/map';
 import ListCities from '../list-cities/list-cities'
 import SortingOptions from '../sorting-options/sorting-options';
-import {connect} from 'react-redux';
+import withActiveItem from '../../hocs/with-active-item';
+
+const SortingOptionsWrapped = withActiveItem(SortingOptions);
 
 const Main = (props) => {
-  const { city, offers, cities, hoverId, onCardClick, onTabClick, onChangeSorting, onHoverCard} = props;
+  const { city, offers, cities, hoverId, onCardClick, onTabClick, onChangeSorting, onHoverCard } = props;
   
-  return <React.Fragment>    
+  return <React.Fragment>
     <div className="page page--gray page--main">
       <header className="header">
         <div className="container">
@@ -35,21 +37,22 @@ const Main = (props) => {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <ListCities cities={cities} onTabClick={onTabClick}/>
+        <ListCities cities={cities} onTabClick={onTabClick} />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length !== 0 ? offers.length : `No` } places to stay in {city}</b>
-              <SortingOptions onChange={onChangeSorting}/>
-              <ListOffers offers={offers} onCardClick={onCardClick} onHoverCard={onHoverCard}/>
+              <b className="places__found">{offers.length !== 0 ? offers.length : `No`} places to stay in {city.name}</b>
+              <SortingOptionsWrapped onChangeSorting={onChangeSorting} />
+              <ListOffers offers={offers} onCardClick={onCardClick} onHoverCard={onHoverCard} />
             </section>
             <div className="cities__right-section">
-                <Map
-                  className="cities__map"                  
-                  offers={offers}
-                  hoverId={hoverId}
-                />
+              <Map
+                className="cities__map"
+                offers={offers}
+                city={city}
+                hoverId={hoverId}
+              />
             </div>
           </div>
         </div>

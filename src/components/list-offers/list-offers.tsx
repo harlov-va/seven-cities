@@ -1,6 +1,6 @@
 import { PureComponent } from "react";
 import React = require("react");
-import { CardOffer } from "../card-offer/card-offer";
+import { Card } from "../card/card";
 import { IOffer } from '../app/app';
 interface IProps {
     offers: IOffer[],
@@ -9,19 +9,19 @@ interface IProps {
 }
 export class ListOffers extends PureComponent<IProps>{
     constructor(props) {
-        super(props);       
+        super(props);
     }
     render() {
         const { offers, onCardClick, onHoverCard } = this.props;
         return <div className="cities__places-list places__list tabs__content">
             {offers.map((offer, index) => {
-                return <CardOffer
+                return <Card
                     key={`offer-${index}`}
                     offer={offer}
-                    onCardClick={() => {
-                        onCardClick(offer.id);                        
-                    }}
-                    onHoverCard={() => {onHoverCard(offer.id)}}
+                    showStatus={true}
+                    className={`cities`}
+                    onCardClick={() => { onCardClick(offer.id); }}
+                    onHoverCard={() => { onHoverCard(offer.id); }}
                 />
             })}
         </div>;

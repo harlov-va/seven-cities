@@ -1,16 +1,16 @@
 import * as React from "react";
+import { ICity } from "../app/app";
 
 interface IProps {
   onTabClick: (city: string) => void,
-  cities: string[]
+  cities: ICity[]
 }
 
 export default class ListCities extends React.PureComponent<IProps>{
   constructor(props) {
-    super(props);
-    const { cities } = this.props;  
+    super(props);    
     this.state = {
-      selectedTab: cities[0],
+      selectedTab: ``,
     }
   }
   _isActive(tabCity) {
@@ -27,9 +27,9 @@ export default class ListCities extends React.PureComponent<IProps>{
       <section className="locations container">
         <ul className="locations__list tabs__list" onClick={this._setActiveTab.bind(this)}>
           {cities.map((city) => {
-            return <li className="locations__item" key={city}>
-              <a className={this._isActive(city) ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item'} href="#">
-                <span>{city}</span>
+            return <li className="locations__item" key={city.name}>
+              <a className={this._isActive(city.name) ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item'} href="#">
+                <span>{city.name}</span>
               </a>
             </li>
           })}
