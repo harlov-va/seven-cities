@@ -2,70 +2,47 @@ import * as React from "react";
 import { ListReviews } from "../list-reviews/list-reviews";
 import { ListNeighbors } from '../list-neighbors/list-neighbors'
 import { Map } from "../map/map";
+import { Header } from "../header/header";
 
 export const Property = (props) => {
-  const { city, reviews, neighbours, hoverId, onCardClick, currentOffer } = props;
+  const { city, 
+    reviews, 
+    neighbours, 
+    hoverId, 
+    isAuthorizationRequired, 
+    user, 
+    onCardClick, 
+    currentOffer,
+    onFormCommentSumbit,
+   } = props;
   return (
     <React.Fragment>
       <div className="page">
-        <header className="header">
-          <div className="container">
-            <div className="header__wrapper">
-              <div className="header__left">
-                <a className="header__logo-link" href="main.html">
-                  <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-                </a>
-              </div>
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
-                      <div className="header__avatar-wrapper user__avatar-wrapper">
-                      </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </header>
+      <Header 
+        isAuthorizationRequired={isAuthorizationRequired}
+        user={user}
+      />
 
         <main className="page__main page__main--property">
           <section className="property">
             <div className="property__gallery-container container">
               <div className="property__gallery">
-                <div className="property__image-wrapper">
-                  <img className="property__image" src="img/room.jpg" alt="Photo studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src="img/apartment-02.jpg" alt="Photo studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src="img/apartment-03.jpg" alt="Photo studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src="img/studio-01.jpg" alt="Photo studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src="img/apartment-01.jpg" alt="Photo studio" />
-                </div>
+                {currentOffer.images.map((property,index) => <div className="property__image-wrapper" key={`images-${index}`}>
+                  <img className="property__image" src={property} alt="Photo studio" />
+                </div>)}
               </div>
             </div>
             <div className="property__container container">
               <div className="property__wrapper">
-                <div className="property__mark">
+                {currentOffer.is_premium && <div className="property__mark">
                   <span>Premium</span>
-                </div>
+                </div>}
                 <div className="property__name-wrapper">
                   <h1 className="property__name">
                     {currentOffer.title}
                   </h1>
-                  <button className="property__bookmark-button button" type="button">
-                    <svg className="property__bookmark-icon" width="31" height="33">
+                  <button className={`property__bookmark-button button ${currentOffer.is_favorite ? `property__bookmark-button--active` : ``}`} type="button">
+                    <svg className="place-card__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
                     <span className="visually-hidden">To bookmarks</span>
@@ -105,30 +82,29 @@ export const Property = (props) => {
                   <h2 className="property__host-title">Meet the host</h2>
                   <div className="property__host-user user">
                     <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                      <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74"
+                      <img className="property__avatar user__avatar" src={currentOffer.host.avatar_url} width="74"
                         height="74"
                         alt="Host avatar" />
                     </div>
                     <span className="property__user-name">
-                      Angelina
+                      {currentOffer.host.name}
                   </span>
-                    <span className="property__user-status">
+                    {currentOffer.host.is_pro && <span className="property__user-status">
                       Pro
-                  </span>
+                  </span>}
                   </div>
                   <div className="property__description">
                     <p className="property__text">
-                      A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The
-                      building is green and from 18th century.
-                    </p>
-                    <p className="property__text">
-                      An independent House, strategically located between Rembrand Square and National Opera, but where
-                      the
-                      bustle of the city comes to rest in this alley flowery and colorful.
+                      {currentOffer.description}
                     </p>
                   </div>
                 </div>
-                <ListReviews reviews={reviews} />
+                <ListReviews reviews={reviews} 
+                isAuthorizationRequired={isAuthorizationRequired} 
+                onReviewSubmit={(event) => {
+                  onFormCommentSumbit(event, currentOffer.id);
+                }}
+                />
               </div>
             </div>
             <Map

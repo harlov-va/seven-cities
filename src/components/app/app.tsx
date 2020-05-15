@@ -3,9 +3,11 @@ import * as React from 'react';
 import Main from '../main/main';
 import MainEmpty from '../main-empty/main-empty';
 import { Property } from '../property/property';
-import { ActionCreator } from '../../reducer/reducer';
+import { SignIn } from '../sign-in/sign-in';
+import { ActionCreator, Operation } from '../../reducer/reducer';
+import { getSortedOffers } from '../../reducer/selectors';
 
-interface IHost {
+interface IUser {
     id: number,
     name: string,
     is_pro: boolean,
@@ -34,25 +36,40 @@ interface IOffer {
     max_adults: number,
     price: number,
     goods: string[],
-    host: IHost,
+    host: IUser,
     description: string,
     location: ILocation,
 }
 interface IReview {
-    name: string,
-    avatar: string,
+    id: number,
+    user: IUser,
     rating: number,
-    description: string,
-    date: number
+    comment: string,
+    date: string,
 }
 interface IProps {
-    reviews: IReview[]
+    reviews: IReview[],
+    loadReviews: (id: number) => void,
 }
 
 class App extends React.PureComponent<IProps>{
     static getScreen(id, props, onUserClick) {
-        const { city, offers, cities, hoverId, reviews, onTabClick, onChangeSorting, onHoverCard } = props;
-        
+        const {
+            city,
+            offers,
+            cities,
+            hoverId,
+            reviews,
+            isAuthorizationRequired,
+            user,
+            onTabClick,
+            onChangeSorting,
+            onHoverCard,
+            onLogin,
+            onFormCommentSumbit,
+            
+        } = props;
+
         if (id === -1) {
             if (offers.length > 0) {
                 return <Main
@@ -64,12 +81,16 @@ class App extends React.PureComponent<IProps>{
                     onTabClick={onTabClick}
                     onChangeSorting={onChangeSorting}
                     onHoverCard={onHoverCard}
+                    isAuthorizationRequired={isAuthorizationRequired}
+                    user={user}
                 />;
             } else {
                 return <MainEmpty
                     city={city}
                     cities={cities}
                     onTabClick={onTabClick}
+                    isAuthorizationRequired={isAuthorizationRequired}
+                    user={user}
                 />
             }
         }
@@ -77,7 +98,7 @@ class App extends React.PureComponent<IProps>{
         let curOffer;
         for (let item of offers) {
             if (item.id === id) {
-                curOffer = {...item};
+                curOffer = { ...item };
                 break;
             }
         }
@@ -85,12 +106,23 @@ class App extends React.PureComponent<IProps>{
             if ((curOffer.id !== elem.id) &&
                 (Math.abs(curOffer.location.latitude.toFixed(2) - elem.location.latitude.toFixed(2)) <= 0.05) &&
                 (Math.abs(curOffer.location.longitude.toFixed(2) - elem.location.longitude.toFixed(2)) <= 0.05)) {
-                neighbours.push({...elem});
+                neighbours.push({ ...elem });
             }
         });
 
         if (id > -1) {
-            return <Property city={city} neighbours={neighbours} reviews={reviews} currentOffer={curOffer} onCardClick={onUserClick} />
+            if (isAuthorizationRequired) {
+                return <SignIn onLogin={onLogin} />;
+            }            
+            return <Property city={city}
+                neighbours={neighbours}
+                reviews={reviews}
+                currentOffer={curOffer}
+                isAuthorizationRequired={isAuthorizationRequired}
+                user={user}
+                onCardClick={onUserClick}
+                onFormCommentSumbit={onFormCommentSumbit}
+            />
         }
         return null;
     }
@@ -102,19 +134,22 @@ class App extends React.PureComponent<IProps>{
     }
     render() {
         const id: number = this.state[`id`];
+        const {loadReviews} = this.props;
         return App.getScreen(id, this.props, (cardId) => {
-            this.setState((prevState) => ({
-                id: cardId
-            }))
+            this.setState({ id: cardId });
+            loadReviews(cardId);
         });
     }
 }
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
     city: state.city,
-    offers: state.offers,
+    offers: getSortedOffers(state),
     cities: state.cities,
     hoverId: state.hoverId,
+    isAuthorizationRequired: state.isAuthorizationRequired,
+    user: state.user,
+    reviews: state.reviews,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -128,16 +163,28 @@ const mapDispatchToProps = (dispatch) => ({
     onHoverCard: (hoverId: number): void => {
         dispatch(ActionCreator.hoverCard(hoverId));
     },
+    onLogin: (evt: any): void => {
+        evt.preventDefault();
+        dispatch(Operation.login(evt));
+    },
+    onFormCommentSumbit: (evt: any, id: number): void => {
+        evt.preventDefault();
+        dispatch(Operation.sendComment(evt, id));
+        dispatch(Operation.loadReviews(id));
+    },
+    loadReviews: (id: number): void => {
+        dispatch(Operation.loadReviews(id));
+    },
 });
 
-export { 
+export {
     App,
-    IHost,
+    IUser,
     ILocation,
     ICity,
     IOffer,
     IReview,
-    IProps,    
- };
+    IProps,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

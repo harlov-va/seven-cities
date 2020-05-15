@@ -8,6 +8,13 @@ export const createAPI = (dispatch) => {
         withCredentials: true,
     });
     const onSuccess = (response) => response;
-    api.interceptors.response.use(onSuccess);
+    // const onFail = (err) => {
+    //     // if(err.response.status === 401) {
+    //     //     // dispatch(ActionCreator.isAuthorization(true));
+    //     //     return true;
+    //     // }
+    //     return err;
+    // }
+    api.interceptors.response.use(onSuccess, );
     return api;
 }

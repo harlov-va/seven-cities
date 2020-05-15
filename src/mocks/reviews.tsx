@@ -1,5 +1,5 @@
 import {IReview} from '../components/app/app';
-const reviews: IReview[] = [
+const reviews: object[] = [
     {
       name: `Max`,
       avatar: `img/avatar-max.jpg`,
