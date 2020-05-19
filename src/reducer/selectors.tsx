@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { IOffer, ICity } from '../components/app/app';
+import { IOffer, ICity } from '../types';
 
 const getOffers = (state) => state.offers;
 const getAllOffers = (state) => state.allOffers;

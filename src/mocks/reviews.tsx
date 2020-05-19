@@ -1,4 +1,4 @@
-import {IReview} from '../components/app/app';
+// import {IReview} from '../../types';
 const reviews: object[] = [
     {
       name: `Max`,

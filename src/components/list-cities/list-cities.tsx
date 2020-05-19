@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ICity } from "../app/app";
+import { ICity } from '../../types';
 
 interface IProps {
   onTabClick: (city: string) => void,

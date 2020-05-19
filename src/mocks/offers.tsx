@@ -1,4 +1,4 @@
-import {IOffer} from '../components/app/app';
+// import {IOffer} from '../../types';
 
 const offers: object[] = [
   {

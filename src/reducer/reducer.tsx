@@ -1,4 +1,4 @@
-import { IOffer, ICity, IReview } from "../components/app/app";
+import { IOffer, ICity, IReview } from '../types';
 
 interface IState {
     city: ICity,
@@ -26,9 +26,9 @@ const initialState: IState = {
     cities: [],
     hoverId: -1,
     sortingOption: `Popular`,
-    isAuthorizationRequired: false,
+    isAuthorizationRequired: true,
     user: {},
-    reviews:[],
+    reviews: [],
 }
 
 const ActionTypes = {
@@ -43,6 +43,8 @@ const ActionTypes = {
     LOGIN: `LOGIN`,
     SEND_COMMENT: `SEND_COMMENT`,
     LOAD_REVIEWS: `LOAD_REVIEWS`,
+    ADD_FAVORITES: `ADD_FAVORITES`,
+    UPDATE_OFFER: `UPDATE_OFFER`,
 };
 
 const ActionCreator = {
@@ -110,6 +112,18 @@ const ActionCreator = {
             payload: reviews,
         }
     },
+    addFavorites: (favorites) => {
+        return {
+            type: ActionTypes.ADD_FAVORITES,
+            payload: favorites,
+        }
+    },
+    updateOffer: (newOffer) => {
+        return {
+            type: ActionTypes.UPDATE_OFFER,
+            payload: newOffer,
+        }
+    },
 }
 
 const filterOffers = (newCity: ICity, offersArr: IOffer[]): IOffer[] => offersArr.filter((offer) => offer.city.name === newCity.name);
@@ -143,8 +157,26 @@ const reducer = (state = initialState, action) => {
         case `LOAD_CITIES`: return { ...state, cities: getCities(action.payload) };
         case ActionTypes.AUTHORIZATION: return { ...state, isAuthorizationRequired: action.payload };
         case ActionTypes.LOGIN: return { ...state, user: action.payload };
-        case ActionTypes.SEND_COMMENT: return { ...state };
+        case ActionTypes.SEND_COMMENT: return state;
         case ActionTypes.LOAD_REVIEWS: return { ...state, reviews: action.payload };
+        case ActionTypes.ADD_FAVORITES: {
+            for (let item of action.payload) {
+                for (let elem of state.allOffers) {
+                    if (item === elem.id) elem.is_favorite = true;
+                }
+            }
+            return state;
+        };
+        case ActionTypes.UPDATE_OFFER: {
+            const oldOffers = [...state.allOffers];
+            for (let i=0; i < oldOffers.length; i++) {
+                if (action.payload.id === oldOffers[i].id) {
+                    oldOffers[i] = {...action.payload};                    
+                    break;
+                }
+            }
+            return { ...state, allOffers: oldOffers };
+        }
     }
     return state;
 }
@@ -182,18 +214,33 @@ const Operation = {
     },
     sendComment: (form, offerId) => (dispatch, _, api) => {
         return api.post(`/comments/${offerId}`, {
-                rating: form.target.querySelector('input[type=radio]:checked').value,
-                comment: form.target.querySelector(`#review`).value,
-            })
+            rating: form.target.querySelector('input[type=radio]:checked').value,
+            comment: form.target.querySelector(`#review`).value,
+        })
             .then((response) => {
                 dispatch(ActionCreator.loadReviews(response.data));
             })
     },
     loadReviews: (offerId) => (dispatch, _, api) => {
         return api.get(`/comments/${offerId}`)
-            .then((response) => {                
+            .then((response) => {
                 dispatch(ActionCreator.loadReviews(response.data));
             })
+    },
+    loadFavorites: (offerId) => (dispatch, _, api) => {
+        return api.get(`/favorite`)
+            .then((response) => {
+                dispatch(ActionCreator.addFavorites(response.data));
+            })
+            .catch(() => {
+
+            });
+    },
+    changeOfferFavoriteStatus: (offerId, status) => (dispatch, getState, api) => {
+        return api.post(`/favorite/${offerId}/${(status >>> 0)}`)
+            .then((response) => {
+                dispatch(ActionCreator.updateOffer(response.data));
+            });
     },
 }
 
