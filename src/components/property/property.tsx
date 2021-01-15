@@ -124,8 +124,8 @@ export const Property = (props) => {
                 </div>
                 <ListReviews reviews={reviews}
                   isAuthorizationRequired={isAuthorizationRequired}
-                  onReviewSubmit={(event) => {
-                    onFormCommentSumbit(event, currentOffer.id);
+                  onReviewSubmit={(payload) => {
+                    onFormCommentSumbit(payload, currentOffer.id);
                   }}
                 />
               </div>
@@ -159,7 +159,8 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onFormCommentSumbit: (id: number): void => {
+  onFormCommentSumbit: (payload: object, id: number): void => {    
+    dispatch(Operation.sendComment(payload, id));
     dispatch(Operation.loadReviews(id));
   },  
   onHoverCard: (hoverId: number): void => {

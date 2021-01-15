@@ -105,9 +105,8 @@ const mapDispatchToProps = (dispatch) => ({
     evt.preventDefault();
     dispatch(Operation.login(evt));
   },
-  onFormCommentSumbit: (evt: any, id: number): void => {
-    evt.preventDefault();
-    dispatch(Operation.sendComment(evt, id));
+  onFormCommentSumbit: (payload: object, id: number): void => {
+    dispatch(Operation.sendComment(payload, id));
     dispatch(Operation.loadReviews(id));
   },
   loadReviews: (id: number): void => {

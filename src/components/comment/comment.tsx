@@ -2,8 +2,20 @@ import * as React from 'react';
 
 export const Comment = (props) => {
     const hadlerSubmit = (event) => {
-        onReviewSubmit(event);
-        event.target.querySelector('input[type=radio]:checked').checked = false;
+        event.preventDefault();
+        let rating = 0;
+        const comment = event.target.querySelector(`#review`).value;
+        const checkboxes = event.target.querySelectorAll('input[type=radio]');
+        checkboxes.forEach((element) => {
+            if (element.checked) {
+                rating = element.value;
+                element.checked = false;
+            }
+        });
+        onReviewSubmit({
+            rating,
+            comment
+        });
         event.target.querySelector(`#review`).value = ``;
     }
     const { onReviewSubmit } = props;

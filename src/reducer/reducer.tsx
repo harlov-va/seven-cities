@@ -1,3 +1,5 @@
+import { comments } from '../mocks/comments';
+import { hotels } from '../mocks/hotels';
 import { IOffer, ICity, IReview } from '../types';
 
 interface IState {
@@ -182,14 +184,23 @@ const reducer = (state = initialState, action) => {
 }
 
 const Operation = {
-    loadOffers: () => (dispatch, _, api) => {
-        return api.get(`/hotels`)
-            .then((response) => {
-                dispatch(ActionCreator.getCities(response.data));
-                dispatch(ActionCreator.changeCity(response.data[0].city.name));
-                dispatch(ActionCreator.loadOffers(response.data));
-                dispatch(ActionCreator.getOffers(response.data[0].city.name));
-            });
+    loadOffers: () => (dispatch, _, api) => { 
+        const promise = new Promise((resolve) => { resolve(null); });              
+        return promise
+                .then((response) => {
+                    dispatch(ActionCreator.getCities(hotels));
+                    dispatch(ActionCreator.changeCity(hotels[0].city.name));
+                    dispatch(ActionCreator.loadOffers(hotels));
+                    dispatch(ActionCreator.getOffers(hotels[0].city.name));
+                });
+        //закоментил
+        // return api.get(`/hotels`)
+        //     .then((response) => {
+        //         dispatch(ActionCreator.getCities(response.data));
+        //         dispatch(ActionCreator.changeCity(response.data[0].city.name));
+        //         dispatch(ActionCreator.loadOffers(response.data));
+        //         dispatch(ActionCreator.getOffers(response.data[0].city.name));
+        //     });
     },
     isAuthorization: () => (dispatch, _, api) => {
         return api.get(`/login`)
@@ -203,29 +214,55 @@ const Operation = {
             })
     },
     login: (form) => (dispatch, _, api) => {
-        return api.post(`/login`, {
-            email: form.target.querySelector(`[name=email]`).value,
-            password: form.target.querySelector(`[name=password]`).value,
-        })
-            .then((response) => {
-                dispatch(ActionCreator.login(response.data));
-                dispatch(ActionCreator.isAuthorization(false));
-            })
+        function validateEmail(email) {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        const promise = new Promise((resolve, reject) => {
+            const email = form.target.querySelector(`[name=email]`).value;
+            const pass = form.target.querySelector(`[name=password]`).value;
+            if (validateEmail(email) && pass) resolve({
+                "id": 1,
+                "email": email,
+                "name": email.split('@')[0],
+                "avatar_url": `/static/avatar/${Math.floor(Math.random() * 10) + 1}.jpg`,
+                "is_pro": false
+            }); else {
+                reject({
+                    "error": "child \"email\" fails because [\"email\" must be a valid email]"
+                });
+            } 
+            
+        });              
+        return promise
+                .then((response) => {
+                    dispatch(ActionCreator.login(response));
+                    dispatch(ActionCreator.isAuthorization(false));
+                });
+        // закоментил
+        // return api.post(`/login`, {
+        //     email: form.target.querySelector(`[name=email]`).value,
+        //     password: form.target.querySelector(`[name=password]`).value,
+        // })
+        //     .then((response) => {
+        //         dispatch(ActionCreator.login(response.data));
+        //         dispatch(ActionCreator.isAuthorization(false));
+        //     })
     },
-    sendComment: (form, offerId) => (dispatch, _, api) => {
-        return api.post(`/comments/${offerId}`, {
-            rating: form.target.querySelector('input[type=radio]:checked').value,
-            comment: form.target.querySelector(`#review`).value,
-        })
-            .then((response) => {
-                dispatch(ActionCreator.loadReviews(response.data));
-            })
+    sendComment: (payload, offerId) => (dispatch, _, api) => { 
+        // закоментил       
+        // return api.post(`/comments/${offerId}`, payload)
+        //     .then((response) => {
+        //         dispatch(ActionCreator.loadReviews(response.data));
+        //     })
     },
     loadReviews: (offerId) => (dispatch, _, api) => {
-        return api.get(`/comments/${offerId}`)
-            .then((response) => {
-                dispatch(ActionCreator.loadReviews(response.data));
-            })
+        dispatch(ActionCreator.loadReviews(comments));
+        // закоментил
+        // return api.get(`/comments/${offerId}`)
+        //     .then((response) => {
+        //         dispatch(ActionCreator.loadReviews(response.data));
+        //     })
     },
     loadFavorites: (offerId) => (dispatch, _, api) => {
         return api.get(`/favorite`)
@@ -237,10 +274,11 @@ const Operation = {
             });
     },
     changeOfferFavoriteStatus: (offerId, status) => (dispatch, getState, api) => {
-        return api.post(`/favorite/${offerId}/${(status >>> 0)}`)
-            .then((response) => {
-                dispatch(ActionCreator.updateOffer(response.data));
-            });
+        dispatch(ActionCreator.updateOffer({...hotels.find((h) => h.id === offerId), is_favorite:status >>> 0}));
+        // return api.post(`/favorite/${offerId}/${(status >>> 0)}`)
+        //     .then((response) => {
+        //         dispatch(ActionCreator.updateOffer(response.data));
+        //     });
     },
 }
 
