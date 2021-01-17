@@ -19,12 +19,12 @@ export class Map extends React.PureComponent<IProps> {
     super(props);
     this.mapRef = React.createRef();
     this.icon = leaflet.icon({
-      iconUrl: `/img/pin.svg`,
+      iconUrl: `img/pin.svg`,
       iconSize: [30, 30]
     });
 
     this.iconActive = leaflet.icon({
-      iconUrl: `/img/pin-active.svg`,
+      iconUrl: `img/pin-active.svg`,
       iconSize: [30, 30]
     });
     this.map = null;

@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as ReactDom from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { HashRouter, Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import App from './components/app/app';
 import { reducer, Operation } from './reducer/reducer';
@@ -25,9 +25,9 @@ const init = () => {
 
     ReactDom.render(
         <Provider store={store}>
-        <Router history={history}>
+        <HashRouter history={history}>
             <App />
-        </Router>
+        </HashRouter>
         </Provider>,
         document.querySelector(`#root`)
     );
